@@ -1,59 +1,79 @@
+  const validFruits = ["Apple", "Banana", "Cherry"];
+  const input = document.getElementById("recipeFood");
+
+  input.addEventListener("change", () => {
+    if (!validFruits.includes(input.value)) {
+      alert("Please choose a valid fruit!");
+      input.value = "";
+    }
+  });
+
 // Get a reference to the container where you want to add the elements
 const calendarContainer = document.getElementById("divCalendar");
+
 // Loop to create multiple div and p elements
 for (let i = 1; i < 31; i++) { // This loop will create 5 sets of div and p
     // Create a new div element
     const dayDiv = document.createElement('div');
     const newDiv = document.createElement('div');
-    const newBtn = document.createElement(`btn`);
-    const divCost = document.createElement(`cost`);
+    const dotContainer = document.createElement('div');
+    const divCost = document.createElement(`div`);
     
 
     // Set attributes for the div
     dayDiv.setAttribute(`class`, `day`);
-    newDiv.setAttribute('id', 'day-${i}');
+    dayDiv.id = `day-container-${i}`;
+    newDiv.id = `day-${i}`;
     newDiv.setAttribute('class', 'day-number');
-    newBtn.setAttribute(`class`,` dot`);
-    newBtn.setAttribute(`onclick`, `showRecipe(${i})`);
+    dotContainer.setAttribute(`class`, `dot-container`);
+    dotContainer.id = `dot-container-${i}`;
     divCost.setAttribute(`class`, `cost`);
 
     newDiv.innerHTML = `${i}`;
-    newBtn.innerHTML = `•`;
     divCost.innerHTML= `${i}`;
     dayDiv.appendChild(newDiv);
-    dayDiv.appendChild(newBtn);
+    dayDiv.appendChild(dotContainer);
+    dayDiv.appendChild(dotContainer);
     dayDiv.appendChild(divCost);
     calendarContainer.appendChild(dayDiv);
 }
 
 
-let calendar = JSON.parse(localStorage.getItem("calendar")) || [];
+let calendar = JSON.parse(localStorage.getItem("calendar")) || []; 
+localStorage.removeItem("calendar"); localStorage.removeItem("recipes");
+
+
   let dailyTotal;
-  let monthTotal = 933;
-  document.getElementById("monthlyTotal").innerHTML = monthTotal;
+
+
 const dayContainer = document.querySelector(".dot-container");
 const mealForm     = document.getElementById("dishForm");
 const dayInput     = document.getElementById("dishDate");
 const dishInput    = document.getElementById("dishName");
 
-  // --- Load existing recipes or start fresh
+  function renderMeals() {
+    calendar.forEach((meal, index) => {
+      const coloredDot = document.createElement("button");
+      const recipeNumber = `showRecipe(${index})`;
+      coloredDot.setAttribute('onclick', recipeNumber);
+      coloredDot.textContent = "•";
+      coloredDot.setAttribute('class', 'dot');
+      const dayIndex = `#dot-container-${meal.day}`; 
+      const dayDiv = document.querySelector(dayIndex); console.log(dayDiv);
+      
+      dayDiv.appendChild(coloredDot); 
+    }); 
+      let monthTotal = 933;
+  document.getElementById("monthlyTotal").innerHTML = monthTotal;
+  }
+
+  // --- Load existing recipes or start fresh${index}
   let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
   const container = document.querySelector(".recipe-container"); 
   const form      = document.getElementById("recipeForm"); 
   const nameInput = document.getElementById("recipeName"); 
   const foodInput = document.getElementById("recipeFood");
   const costInput = document.getElementById("recipeCost");
-
-  function renderMeals() {
-    calendar.forEach((day, index) => {
-      const coloredDot = document.createElement("button");
-      coloredDot.innerHTML = `
-      <button id="day-1">•${index}</button>
-      <p>${day.name}</p>
-      `;
-      dayContainer.appendChild(coloredDot);
-    });
-  }
 
   function renderRecipes() {
     recipes.forEach((recipe, index) => {
@@ -78,7 +98,6 @@ const dishInput    = document.getElementById("dishName");
     });
   }
 
-console.log(mealForm); // should NOT be null now
   mealForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const day = parseFloat(dayInput.value); 
@@ -113,21 +132,15 @@ function addDish(name, day) {
   alert("fewhju");
   renderMeals();
  }
-/*
-function addRecipe(name, cost) {
+ function addRecipe(name, cost) {
   recipes.push({ name, cost });
   renderRecipes(); // rebuild cards
+ }
 
-  // Example: clicking the dot to view a popup
-  function showRecipe(index) {
+   function showRecipe(index) {
     const recipe = recipes[index];
     alert(`${recipe.name}\nCost: $${recipe.index}`);
   } 
-  /*
-  function showCalendar(index) {
-    const day = calendar[index];
-    alert(`${day.name}\nCost: $${day.index}`);
-  }  */
 
 //MODALS
 var modal = document.getElementById("myModal");
@@ -186,4 +199,4 @@ window.onclick = function(event) {
   // Initial render
   
 renderRecipes();
-//renderMeals();
+renderMeals();
