@@ -7,4 +7,157 @@
         <meta name="keywords" content="HTML, CSS, JavaScript">
         <link rel="stylesheet" href="style.css">
     </head>
-    <body>
+    <body> 
+    <div class="main-container">      
+    <h2>Monthly Food Budget</h2>
+  
+<script>
+
+</script>
+
+    <div class="calendar-section=">
+    <div class="calendar-grid" id="divCalendar">
+        <div class="day">
+            <div class="day-number" id="da-1">1</div>
+            <!-- This div fills horizontal space and centers e dot -->
+            <div class="dot-container" id="dot=1">
+            <button class="dot" id="myBtn">Bojangles Leg and Thigh</button>
+            </div>
+            <div class="cost">$100</div>
+        </div>
+        </div> <!--end calendar grid-->
+        </div> <!--end calendar sectiononclick = "addDish()" -->
+        <p>Total Cost</p> <p id="monthlyTotal"> $478.50</p> <hr>
+        <button id="openDishForm">Add a Dish to a Day</button>
+        <div class="delete-btn">
+            <span class="close">&times;</span>
+            <h3 id="modalTitle"></h3>
+            <p id="modalCost"></p>
+            <button id="deleteBtn" class="delete-btn">Delete Recipe</button>
+        </div>
+        
+        <!--RECIPESonclick="addRecipe()"-->
+        <h3>Recipes</h3>
+         <div class="recipe-container"> 
+        
+            <div class="recipe-card">
+            <button  id = "addBtn">Initalize adding</button>
+            </div>
+            <div class="recipe-card">
+            <h2>Bojangles Leg and Thighs</h2>
+            <img src="legThigh2fixins.PNG" alt="Bojangles Leg and Thighs Image">
+            <ul>
+                <li>Chicken</li>
+                <li>Mashed Potatoes</li>
+                <li>Dirty Rice</li>
+                <li>Sweet Tea</li>
+            </ul>
+            <div class = "cost">$3.79</div>
+        </div>
+
+        <div class="recipe-card">
+            <h4>Buffalo Wings and Fries</h2>
+            <img src="buffaloWingsFries.png" alt="Buffalo Wings and Fries Image">
+            <ul>
+                <li>Chicken</li>
+                <li>Potatoes</li>
+                <li>Soda</li>
+            </ul>  
+            <div class = "cost">$2.95</div>
+        </div>
+        <div class="recipe-card">
+            <h4>Pork Belly and Chinese Brocolli w/Rice</h4>
+            <img src="porkBelly.png" alt="Pork Belly and Chinese Brocolli w/Rice">
+            <ul>
+                <li>Pork Belly</li>
+                <li>Chinese Brocolli</li>
+                <li>Rice</li>
+            </ul>  
+            <div class = "cost">$2.25</div>
+        </div>
+        <div class="recipe-card">
+            <h4>Starbucks Caramel Frapuccino</h4>
+            <img src="caramelFrap.jpg" alt="Starbucks Caramel Frapuccino">
+            <ul>
+                <li>Milk</li>
+                <li>Caramel Syrup</li>
+                <li>Ice</li>
+            </ul>  
+            <div class = "cost">$0.40</div>
+        </div>
+        <div class="recipe-card">
+            <h4>Bojangles Dirty Rice</h4>
+            <img src="bojanglesDirtyRice.jpg" alt="Pork Belly and Chinese Brocolli w/Rice">
+            <ul>
+                <li>Chicken Stock</li>
+                <li>Sausage Patties</li>
+                <li>Rice</li>
+            </ul>  
+            <div class = "cost">$1.00</div>
+        </div>
+        
+    </div> <!--end recipe container-->
+</div> <!--end main container -->
+
+<!-- The Modals -->
+    <div id="dishModal" class="modal">
+        <div class="modal-content">
+        <span class="close" id="dishSpan">&times;</span>   
+            <form id="dishForm">
+                <input type="number" id="dishDate" placeholder="1" required> 
+                <input list="meals" id="dishName" placeholder="chicken wins and fries"/>
+                    <datalist id ="meals">
+                        <option value="Chicken Wings and Fries"></option>
+                        <option value="Bojangles Dirty Rice"></option>
+                    </datalist>
+                <button type="submit">Add Dish to Calendar</button>
+            </form>   
+        </div> 
+    </div>
+
+
+    <div id="recipeModal" class="modal">
+        <div class="modal-content">
+        <span class="close" id="recipeSpan">&times;</span>
+            <div>
+            <form id="recipeForm">
+                <input type="text" id="recipeName" placeholder="Recipe Name" required>
+                <input type="file" id="myfile" name="myfile">
+                <input type="number" id="recipeCost" placeholder="Cost ($)" required>
+                <!--<input type="text" id="recipeFood" placeholder="ingredient" required> -->
+                    <input list="fruits" type="text" id="recipeFood" placeholder="Choose a fruit" />
+<datalist id="fruits">
+  <option value="Apple">
+  <option value="Banana">
+  <option value="Cherry">
+</datalist>
+  
+                <button type="submit">Add Recipe</button>
+            </form>   
+            </div>
+        </div> 
+    </div>
+
+    
+    <div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close" id="span">&times;</span>
+        <div class="recipe-card">
+            <h4>Pork Belly and Chinese Brocolli w/Rice</h4>
+            <img src="porkBelly.png" alt="Pork Belly and Chinese Brocolli w/Rice">
+            <ul>
+                <li>Pork Belly</li>
+                <li>Chinese Brocolli</li>
+                <li>Rice</li>
+            </ul>  
+            <div class = "cost">$3.40</div>
+        </div>
+    </div>
+
+    </div>
+    </body>
+    <script src="myScript.js"></script> 
+    
+</html>
