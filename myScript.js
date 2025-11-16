@@ -8,19 +8,36 @@
     }
   });
 
-// Get a reference to the container where you want to add the elements
-const calendarContainer = document.getElementById("divCalendar");
+ //Initalize all dom data 
+  let calendar = JSON.parse(localStorage.getItem("calendar")) || []; 
+  const calendarContainer = document.getElementById("divCalendar");
+  const dayContainer = document.querySelector(".dot-container");
+  const mealForm     = document.getElementById("dishForm");
+  const dayInput     = document.getElementById("dishDate");
+  const dishInput    = document.getElementById("dishName");
 
-// Loop to create multiple div and p elements
-for (let i = 1; i < 31; i++) { // This loop will create 5 sets of div and p
-    // Create a new div element
+  // --- Load existing recipes or start fresh 
+  let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
+  const container = document.querySelector(".recipe-container"); 
+  const form      = document.getElementById("recipeForm"); 
+  const nameInput = document.getElementById("recipeName"); 
+  const foodInput = document.getElementById("recipeFood");
+  let costInput = document.getElementById("recipeCost");
+  const recipeList = document.getElementById("meals");
+
+  const totals = {};
+  for (let i = 1; i <= 30; i++) {
+    totals[i] = 0;
+  }
+  let total = 0;
+  const monthTotal = document.getElementById("monthlyTotal");
+
+for (let i = 1; i <= 30; i++) { 
     const dayDiv = document.createElement('div');
     const newDiv = document.createElement('div');
     const dotContainer = document.createElement('div');
     const divCost = document.createElement(`div`);
     
-
-    // Set attributes for the div
     dayDiv.setAttribute(`class`, `day`);
     dayDiv.id = `day-container-${i}`;
     newDiv.id = `day-${i}`;
@@ -28,7 +45,9 @@ for (let i = 1; i < 31; i++) { // This loop will create 5 sets of div and p
     dotContainer.setAttribute(`class`, `dot-container`);
     dotContainer.id = `dot-container-${i}`;
     divCost.setAttribute(`class`, `cost`);
+    divCost.id = `day-total-${i}`;
 
+    divCost.innerHTML = 0;
     newDiv.innerHTML = `${i}`;
     divCost.innerHTML= `${i}`;
     dayDiv.appendChild(newDiv);
@@ -36,49 +55,77 @@ for (let i = 1; i < 31; i++) { // This loop will create 5 sets of div and p
     dayDiv.appendChild(dotContainer);
     dayDiv.appendChild(divCost);
     calendarContainer.appendChild(dayDiv);
-}
-
-
-let calendar = JSON.parse(localStorage.getItem("calendar")) || []; 
-localStorage.removeItem("calendar"); localStorage.removeItem("recipes");
-
-
-  let dailyTotal;
-
-
-const dayContainer = document.querySelector(".dot-container");
-const mealForm     = document.getElementById("dishForm");
-const dayInput     = document.getElementById("dishDate");
-const dishInput    = document.getElementById("dishName");
-
-  function renderMeals() {
-    calendar.forEach((meal, index) => {
-      const coloredDot = document.createElement("button");
-      const recipeNumber = `showRecipe(${index})`;
-      coloredDot.setAttribute('onclick', recipeNumber);
-      coloredDot.textContent = "•";
-      coloredDot.setAttribute('class', 'dot');
-      const dayIndex = `#dot-container-${meal.day}`; 
-      const dayDiv = document.querySelector(dayIndex); console.log(dayDiv);
-      
-      dayDiv.appendChild(coloredDot); 
-    }); 
-      let monthTotal = 933;
-  document.getElementById("monthlyTotal").innerHTML = monthTotal;
   }
 
-  // --- Load existing recipes or start fresh${index}
-  let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
-  const container = document.querySelector(".recipe-container"); 
-  const form      = document.getElementById("recipeForm"); 
-  const nameInput = document.getElementById("recipeName"); 
-  const foodInput = document.getElementById("recipeFood");
-  const costInput = document.getElementById("recipeCost");
+
+  //DELETE RECIPE ITEM 
+  function deleteRecipes() {
+    //deletes all recipe cards no selection picked 
+    for (i = 0; i < recipes.length; i++) {
+      const card = document.getElementById(`recipeCard${i}`);
+      const options = document.getElementById(`recipe-option-${i}`);   
+      if (card) {card.remove();}
+      options.remove();
+    }  
+    //delete dom data for calendar data 
+    for (let i = 1; i <= 31; i++) {
+      const container = document.getElementById(`dot-container-${i}`);
+    if (container) container.innerHTML = "";
+    }
+    //delete memory data for both array 
+    localStorage.removeItem("calendar"); 
+    localStorage.removeItem("recipes"); 
+    recipes = [];
+    calendar = [];
+    monthTotal = 0;
+  }  
+
+function renderCalendar() {
+  // STEP 1: Clear ALL dom data for calendar 
+  for (let i = 1; i <= 30; i++) {
+    const container = document.getElementById(`dot-container-${i}`);
+    if (container) container.innerHTML = "";
+  }
+  for (let i = 1; i <= 30; i++) {
+    totals[i] = 0;
+  }
+  // STEP 2: Re-add dots based on calendar array and going thru it 
+  calendar.forEach((meal, index) => {
+    const container = document.getElementById(`dot-container-${meal.day}`);
+    if (!container) return;
+    const dot = document.createElement("button");
+    dot.className = "dot";
+    dot.textContent = "•";
+    dot.setAttribute("onclick", `showRecipe(${index})`);
+    container.appendChild(dot);
+       totals[meal.day] += meal.price;  
+  }); 
+  //add to a completely new original amount 
+  total = 0;
+  for (let i = 1; i <= 30; i++) {
+    const element = document.getElementById(`day-total-${i}`);
+    element.innerHTML = `${totals[i]}`; 
+      
+    total += totals[i];
+  }  
+    monthTotal.innerHTML = `${total}`;
+}
 
   function renderRecipes() {
     recipes.forEach((recipe, index) => {
+    for (i = 0; i < recipes.length; i++) {
+      const card = document.getElementById(`recipeCard${i}`);
+      if (card) card.remove();
+    }
       const card = document.createElement("div");
+      const recipeOption = document.createElement("option");
+      recipeOption.className = "recipeOptionClass";
+      recipeOption.id = `recipe-option-${index}`;
+      recipeOption.innerHTML = `
+      <option value="${recipe.name}">
+      `;
       card.className = "recipe-card";
+      card.id = `recipeCard${index}`;
       card.innerHTML = `
         <div class="day-number">${recipe.name}</div>
         <div class="dot-container">
@@ -94,21 +141,23 @@ const dishInput    = document.getElementById("dishName");
         <div class="cost">${recipe.cost}</div> 
         </div>
       `;
+      recipeList.appendChild(recipeOption);
       container.appendChild(card);
     });
   }
 
+  // Add a new meal to calendar 
   mealForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const day = parseFloat(dayInput.value); 
-    const name =  dishInput.value.trim(); //changed from nameinput to dishinput
-    
-
+    const name =  dishInput.value.trim(); 
+    const recipe = recipes.find(r => r.name === name);
+    const price = recipe ? recipe.cost : 0;
     if (name && !isNaN(day)) {
-      calendar.push({day, name});
+      calendar.push({day, name, price});
       localStorage.setItem("calendar", JSON.stringify(calendar));
-      renderMeals();
-      mealForm.reset();
+      renderCalendar();
+      //mealForm.reset();
     }
   });
 
@@ -120,83 +169,12 @@ const dishInput    = document.getElementById("dishName");
     const ingredients = foodInput.value.trim();
 
     if (name && !isNaN(cost)) {
-      recipes.push({ name, cost, ingredients});
+      recipes.push({name, cost, ingredients});
       localStorage.setItem("recipes", JSON.stringify(recipes));
       renderRecipes();
       form.reset();
     }
   });
 
-function addDish(name, day) {
-  calendar.push({name, day});
-  alert("fewhju");
-  renderMeals();
- }
- function addRecipe(name, cost) {
-  recipes.push({ name, cost });
-  renderRecipes(); // rebuild cards
- }
-
-   function showRecipe(index) {
-    const recipe = recipes[index];
-    alert(`${recipe.name}\nCost: $${recipe.index}`);
-  } 
-
-//MODALS
-var modal = document.getElementById("myModal");
-var addRecipeForm = document.getElementById("recipeModal");
-var addDishForm = document.getElementById("dishModal"); 
-
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
-var openAddRecipe = document.getElementById("addBtn");
-var openAddDish = document.getElementById("openDishForm");
-
-// Get the <span> element that closes the modal
-var closeModal = document.getElementById("span");
-var closeRecipe = document.getElementById("recipeSpan");
-var closeMeal = document.getElementById("dishSpan");
-
-
-// When the user clicks the button, open the modal 
-btn.onclick = function() { 
-  modal.style.display = "block";
-}
-openAddDish.onclick = function() {
-  addDishForm.style.display = "block";
-}
-
-// When the user clicks the button, open the FORM modal 
-openAddRecipe.onclick = function() {
-  addRecipeForm.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-closeModal.onclick = function() {
-  modal.style.display = "none";
-}
-  closeRecipe.onclick = function() {
-  addRecipeForm.style.display = "none";
-  }
-  closeMeal.onclick = function(){
-  addDishForm.style.display = "none";
-  }
-
-// Load
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-  if (event.target == addRecipeForm) {
-    addRecipeForm.style.display = "none";
-  }
-  if (event.target == addDishForm) {
-    addDishForm.style.display = "none";
-  }
-}
-
-  // Initial render
-  
 renderRecipes();
-renderMeals();
+renderCalendar();
