@@ -22,7 +22,7 @@
   const form      = document.getElementById("recipeForm"); 
   const nameInput = document.getElementById("recipeName"); 
   const foodInput = document.getElementById("recipeFood");
-  let costInput = document.getElementById("recipeCost");
+  const costInput = document.getElementById("recipeCost");
   const recipeList = document.getElementById("meals");
 
   const totals = {};
@@ -70,14 +70,14 @@ for (let i = 1; i <= 30; i++) {
     //delete dom data for calendar data 
     for (let i = 1; i <= 31; i++) {
       const container = document.getElementById(`dot-container-${i}`);
-    if (container) container.innerHTML = "";
+      if (container) container.innerHTML = "";
     }
     //delete memory data for both array 
     localStorage.removeItem("calendar"); 
     localStorage.removeItem("recipes"); 
     recipes = [];
     calendar = [];
-    monthTotal = 0;
+    monthTotal.value = 0;
   }  
 
 function renderCalendar() {
@@ -105,18 +105,19 @@ function renderCalendar() {
   for (let i = 1; i <= 30; i++) {
     const element = document.getElementById(`day-total-${i}`);
     element.innerHTML = `${totals[i]}`; 
-      
     total += totals[i];
   }  
     monthTotal.innerHTML = `${total}`;
 }
 
   function renderRecipes() {
-    recipes.forEach((recipe, index) => {
-    for (i = 0; i < recipes.length; i++) {
+     for (i = 0; i < recipes.length; i++) {
       const card = document.getElementById(`recipeCard${i}`);
-      if (card) card.remove();
-    }
+    if (card) card.remove(); }  
+    if (recipeList) recipeList.innerHTML = ''; //kept having this error, make sure to clear before looping 
+
+    recipes.forEach((recipe, index) => {
+
       const card = document.createElement("div");
       const recipeOption = document.createElement("option");
       recipeOption.className = "recipeOptionClass";
@@ -141,6 +142,7 @@ function renderCalendar() {
         <div class="cost">${recipe.cost}</div> 
         </div>
       `;
+      
       recipeList.appendChild(recipeOption);
       container.appendChild(card);
     });
