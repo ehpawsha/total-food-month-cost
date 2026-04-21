@@ -10,38 +10,25 @@
     <body> 
     <div class="main-container">      
     <h2>Monthly Food Budget</h2>
-  
-<script>
-
-</script>
 
     <div class="calendar-section=">
     <div class="calendar-grid" id="divCalendar">
-        <div class="day">
-            <div class="day-number" id="da-1">1</div>
-            <!-- This div fills horizontal space and centers e dot -->
-            <div class="dot-container" id="dot=1">
-            <button class="dot" id="myBtn">Bojangles Leg and Thigh</button>
-            </div>
-            <div class="cost">$100</div>
-        </div>
         </div> <!--end calendar grid-->
-        </div> <!--end calendar sectiononclick = "addDish()" -->
-        <p>Total Cost</p> <p id="monthlyTotal"> $478.50</p> <hr>
+        </div> <!--end calendar -->
+
+        <p>Total Cost</p> 
+        <p id="monthlyTotal"></p> <hr>
         <button id="openDishForm">Add a Dish to a Day</button>
         <div class="delete-btn">
-            <span class="close">&times;</span>
-            <h3 id="modalTitle"></h3>
-            <p id="modalCost"></p>
-            <button id="deleteBtn" class="delete-btn">Delete Recipe</button>
+            <button id="deleteBtn" onclick ="deleteRecipes()" class="delete-btn">Delete Recipe</button>
         </div>
         
-        <!--RECIPESonclick="addRecipe()"-->
+        <!--RECIPES"-->
         <h3>Recipes</h3>
          <div class="recipe-container"> 
         
             <div class="recipe-card">
-            <button  id = "addBtn">Initalize adding</button>
+            <button id = "addBtn">Initalize adding</button>
             </div>
             <div class="recipe-card">
             <h2>Bojangles Leg and Thighs</h2>
@@ -99,49 +86,45 @@
     </div> <!--end recipe container-->
 </div> <!--end main container -->
 
-<!-- The Modals -->
+    <!-- The Modals -->
+     <!-- ADD DISH TO CAlENDAR-->
     <div id="dishModal" class="modal">
         <div class="modal-content">
         <span class="close" id="dishSpan">&times;</span>   
             <form id="dishForm">
-                <input type="number" id="dishDate" placeholder="1" required> 
-                <input list="meals" id="dishName" placeholder="chicken wins and fries"/>
+                <input class="day" type="number" id="dishDate" placeholder="1" min="1" max="30" step="1" required> 
+                <input class="dot-container" list="meals" id="dishName" placeholder="chicken wings and fries"/>
                     <datalist id ="meals">
-                        <option value="Chicken Wings and Fries"></option>
-                        <option value="Bojangles Dirty Rice"></option>
+                        <option value="Chicken Wings and Fries">
+                        <option value="Bojangles Dirty Rice">
                     </datalist>
-                <button type="submit">Add Dish to Calendar</button>
+                <button class="cost" type="submit">Add Dish to Calendar</button>
             </form>   
         </div> 
     </div>
 
-
+    <!-- ADD RECIPE-->
     <div id="recipeModal" class="modal">
         <div class="modal-content">
         <span class="close" id="recipeSpan">&times;</span>
             <div>
             <form id="recipeForm">
                 <input type="text" id="recipeName" placeholder="Recipe Name" required>
-                <input type="file" id="myfile" name="myfile">
-                <input type="number" id="recipeCost" placeholder="Cost ($)" required>
-                <!--<input type="text" id="recipeFood" placeholder="ingredient" required> -->
+                <input input="file" id="myfile" name="myfile">
+                <input type="number" id="recipeCost" placeholder="Cost ($)" step="0.01" required>
                     <input list="fruits" type="text" id="recipeFood" placeholder="Choose a fruit" />
-<datalist id="fruits">
-  <option value="Apple">
-  <option value="Banana">
-  <option value="Cherry">
-</datalist>
-  
+                    <datalist id="fruits">
+                    <option value="Apple">
+                    <option value="Banana">
+                    <option value="Cherry">
+                    </datalist>
                 <button type="submit">Add Recipe</button>
             </form>   
             </div>
         </div> 
     </div>
-
     
     <div id="myModal" class="modal">
-
-    <!-- Modal content -->
     <div class="modal-content">
         <span class="close" id="span">&times;</span>
         <div class="recipe-card">
@@ -155,9 +138,9 @@
             <div class = "cost">$3.40</div>
         </div>
     </div>
-
     </div>
+
     </body>
     <script src="myScript.js"></script> 
-    
+    <script src="modal.js"></script> 
 </html>
